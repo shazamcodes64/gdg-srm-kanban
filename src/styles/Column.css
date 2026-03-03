@@ -1,0 +1,126 @@
+/* Column Component Styles */
+
+.column {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-secondary);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Column Header */
+
+.column-header {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  padding: 1rem 1.25rem;
+  background-color: var(--column-header-bg);
+  border-bottom: 2px solid var(--border-color);
+  margin: 0;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.column-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--border-color);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 12px;
+  margin-left: 8px;
+}
+
+/* Task List Container */
+
+.task-list {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 200px;
+}
+
+/* Scrollbar Styling */
+
+.task-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.task-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.task-list::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+.task-list::-webkit-scrollbar-thumb:hover {
+  background: #c0c0c0;
+}
+
+/* Drag and Drop States */
+
+.task-list.dragging-over {
+  background-color: rgba(100, 108, 255, 0.05);
+  border: 2px dashed var(--accent-color);
+  border-radius: 4px;
+}
+
+.dragging {
+  opacity: 0.6;
+}
+
+/* Empty State */
+
+.column-empty {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: #9aa4ab;
+  font-style: italic;
+  font-size: 0.875rem;
+}
+
+/* Responsive Layout Adjustments for Mobile */
+
+@media (max-width: 767px) {
+  .column {
+    width: 100%;
+    margin-bottom: 1rem;
+    min-height: auto;
+  }
+  
+  .column-header {
+    padding: 0.875rem 1rem;
+    font-size: 1rem;
+  }
+  
+  .task-list {
+    padding: 0.75rem;
+    min-height: 150px;
+    max-height: 400px;
+  }
+}
+
+/* Desktop Layout (handled by Board.css grid) */
+
+@media (min-width: 768px) {
+  .column {
+    height: 100%;
+  }
+  
+  .task-list {
+    max-height: none;
+  }
+}

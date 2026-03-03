@@ -1,0 +1,131 @@
+/* Task Card Styles */
+
+.task-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 6px rgba(6, 24, 45, 0.06);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.task-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(6, 24, 45, 0.08);
+}
+
+.task-card:focus-within {
+  outline: 3px solid rgba(70, 130, 180, 0.16);
+  outline-offset: 2px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Task Content */
+
+.task-content {
+  margin-bottom: 0.75rem;
+}
+
+.task-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+.task-description {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Task Actions */
+
+.task-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.task-button {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+}
+
+.task-button-edit {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.task-button-edit:hover {
+  background-color: var(--accent-hover);
+}
+
+.task-button-delete {
+  background-color: transparent;
+  color: var(--error-color);
+  border: 1px solid var(--error-color);
+}
+
+.task-button-delete:hover {
+  background-color: var(--error-color);
+  color: white;
+}
+
+.task-button-edit:focus-visible,
+.task-button-delete:focus-visible {
+  outline: 3px solid rgba(59, 130, 246, 0.4);
+  outline-offset: 2px;
+}
+
+/* Responsive Design */
+
+@media (max-width: 767px) {
+  .task-card {
+    padding: 0.875rem;
+  }
+  
+  .task-button {
+    flex: 1;
+    min-width: 44px;
+  }
+  
+  .task-actions {
+    gap: 0.5rem;
+  }
+}
+
+/* Dragging State (for @hello-pangea/dnd) */
+
+.task-card[data-is-dragging="true"] {
+  opacity: 0.5;
+  transform: rotate(2deg);
+}

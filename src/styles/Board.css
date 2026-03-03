@@ -1,0 +1,17 @@
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  height: calc(100vh - 4rem);
+  padding: 1rem;
+}
+
+/* Mobile layout - vertical stacked columns */
+@media (max-width: 767px) {
+  .board {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: auto;
+  }
+}
