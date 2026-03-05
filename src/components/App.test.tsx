@@ -35,6 +35,9 @@ describe('App Integration Tests', () => {
     }
     
     global.crypto.randomUUID = vi.fn(() => `test-uuid-${Math.random()}`);
+    
+    // Mock window.confirm to always return true
+    global.confirm = vi.fn(() => true);
   });
 
   afterEach(() => {
@@ -49,9 +52,14 @@ describe('App Integration Tests', () => {
       const createButton = screen.getByRole('button', { name: /Create new task/i });
       fireEvent.click(createButton);
 
+      // Wait for lazy-loaded TaskForm
+      await waitFor(() => {
+        expect(screen.getByLabelText(/Task title/i)).toBeInTheDocument();
+      });
+
       // Fill in form
-      const titleInput = screen.getByLabelText(/Title/i);
-      const descriptionInput = screen.getByLabelText(/Description/i);
+      const titleInput = screen.getByLabelText(/Task title/i);
+      const descriptionInput = screen.getByLabelText(/Task description/i);
       
       fireEvent.change(titleInput, { target: { value: 'New Test Task' } });
       fireEvent.change(descriptionInput, { target: { value: 'Test description' } });
@@ -78,7 +86,12 @@ describe('App Integration Tests', () => {
       const createButton = screen.getByRole('button', { name: /Create new task/i });
       fireEvent.click(createButton);
 
-      const titleInput = screen.getByLabelText(/Title/i);
+      // Wait for lazy-loaded TaskForm
+      await waitFor(() => {
+        expect(screen.getByLabelText(/Task title/i)).toBeInTheDocument();
+      });
+
+      const titleInput = screen.getByLabelText(/Task title/i);
       fireEvent.change(titleInput, { target: { value: 'Task to Save' } });
 
       const submitButton = screen.getByRole('button', { name: /Create Task/i });

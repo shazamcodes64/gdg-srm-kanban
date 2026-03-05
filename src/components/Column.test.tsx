@@ -61,8 +61,10 @@ describe('Column', () => {
   it('renders column with correct label', () => {
     renderColumn('todo', 'To Do');
 
-    const heading = screen.getByRole('heading', { level: 2, name: 'To Do' });
+    // The heading now contains both label and count as separate spans
+    const heading = screen.getByRole('heading', { level: 2 });
     expect(heading).toBeInTheDocument();
+    expect(heading).toHaveTextContent('To Do');
   });
 
   it('renders column with correct aria-label', () => {
@@ -123,8 +125,9 @@ describe('Column', () => {
       </DragDropContext>
     );
 
-    const heading = screen.getByRole('heading', { level: 2, name: 'To Do' });
+    const heading = screen.getByRole('heading', { level: 2 });
     expect(heading).toBeInTheDocument();
+    expect(heading).toHaveTextContent('To Do');
 
     // No tasks should be displayed
     expect(screen.queryByText('Todo Task')).not.toBeInTheDocument();

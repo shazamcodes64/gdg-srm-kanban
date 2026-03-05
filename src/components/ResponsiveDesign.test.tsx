@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { App } from './App';
 
@@ -210,13 +210,18 @@ describe('Responsive Design Tests', () => {
       const addButton = screen.getByText('+ New Task');
       await user.click(addButton);
       
+      // Wait for lazy-loaded TaskForm to render
+      await waitFor(() => {
+        expect(screen.getByLabelText(/Task title/i)).toBeInTheDocument();
+      });
+      
       // Modal should be visible - check for the modal content
       const modal = document.querySelector('.modal-overlay');
       expect(modal).toBeInTheDocument();
       
       // Form elements should be present
-      expect(screen.getByLabelText(/title/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/description/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Task title/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Task description/i)).toBeInTheDocument();
     });
 
     it('should have full-width buttons on mobile form', async () => {
