@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import type { FormEvent } from 'react';
 import type { Task, TaskPriority } from '../types';
-import { PRIORITY_LABELS } from '../types';
+import { PRIORITY_LABELS, PRIORITY_COLORS } from '../types';
+import { predictTaskPriority } from '../ml/taskPrioritization';
 import '../styles/TaskForm.css';
 
 export interface TaskFormProps {
@@ -20,6 +21,12 @@ export function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState<TaskPriority>('medium');
   const [errors, setErrors] = useState<FormErrors>({});
+  const [mlSuggestion, setMlSuggestion] = useState<{
+    priority: TaskPriority;
+    confidence: number;
+    reasoning: string[];
+  } | null>(null);
+  const [showMlInsights, setShowMlInsights] = useState(false);
 
   // Initialize form with task data for edit mode
   useEffect(() => {
@@ -33,7 +40,24 @@ export function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
       setPriority('medium');
     }
     setErrors({});
+    setMlSuggestion(null);
+    setShowMlInsights(false);
   }, [task]);
+
+  // ML-powered priority prediction when title or description changes
+  useEffect(() => {
+    if (title.trim().length > 3) {
+      const prediction = predictTaskPriority(title, description);
+      setMlSuggestion(prediction);
+      
+      // Auto-set priority for new tasks if confidence is high
+      if (!task && prediction.confidence >= 0.7) {
+        setPriority(prediction.priority);
+      }
+    } else {
+      setMlSuggestion(null);
+    }
+  }, [title, description, task]);
 
   // Handle Escape key to close modal
   useEffect(() => {
@@ -158,6 +182,48 @@ export function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
                 </option>
               ))}
             </select>
+            
+            {/* ML Priority Suggestion */}
+            {mlSuggestion && mlSuggestion.priority !== priority && (
+              <div className="ml-suggestion">
+                <div className="ml-suggestion-header">
+                  <span className="ml-icon">🤖</span>
+                  <span className="ml-text">
+                    AI suggests: <strong style={{ color: PRIORITY_COLORS[mlSuggestion.priority] }}>
+                      {PRIORITY_LABELS[mlSuggestion.priority]}
+                    </strong>
+                    <span className="ml-confidence"> ({Math.round(mlSuggestion.confidence * 100)}% confident)</span>
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setPriority(mlSuggestion.priority)}
+                    className="ml-apply-btn"
+                    aria-label="Apply AI suggestion"
+                  >
+                    Apply
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowMlInsights(!showMlInsights)}
+                    className="ml-info-btn"
+                    aria-label="Show AI reasoning"
+                  >
+                    {showMlInsights ? '▼' : '▶'}
+                  </button>
+                </div>
+                
+                {showMlInsights && (
+                  <div className="ml-insights">
+                    <p className="ml-insights-title">AI Reasoning:</p>
+                    <ul className="ml-insights-list">
+                      {mlSuggestion.reasoning.map((reason, idx) => (
+                        <li key={idx}>{reason}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="form-actions">

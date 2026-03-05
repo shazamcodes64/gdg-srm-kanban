@@ -4,9 +4,9 @@
 export type TaskStatus = 'todo' | 'inprogress' | 'done';
 
 /**
- * Task priority levels
+ * Task priority levels (ML-enhanced)
  */
-export type TaskPriority = 'low' | 'medium' | 'high';
+export type TaskPriority = 'low' | 'medium' | 'high' | 'urgent';
 
 /**
  * Task entity representing a work item in the kanban board
@@ -43,6 +43,7 @@ export const PRIORITY_LABELS: Record<TaskPriority, string> = {
   low: 'Low',
   medium: 'Medium',
   high: 'High',
+  urgent: 'Urgent',
 };
 
 /**
@@ -52,4 +53,5 @@ export const PRIORITY_COLORS: Record<TaskPriority, string> = {
   low: '#10b981',    // green
   medium: '#f59e0b', // orange
   high: '#ef4444',   // red
+  urgent: '#dc2626', // dark red
 };
