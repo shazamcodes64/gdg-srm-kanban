@@ -160,3 +160,26 @@
     width: 100%;
   }
 }
+
+/* Priority Select */
+.priority-select {
+  width: 100%;
+  padding: 0.625rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.priority-select:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+.priority-select:hover {
+  border-color: var(--accent-color);
+}

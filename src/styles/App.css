@@ -28,10 +28,37 @@
   gap: 1rem;
 }
 
+.app-header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .app-header h1 {
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
+}
+
+.search-input {
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 0.875rem;
+  min-width: 200px;
+  transition: all 0.2s ease;
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .theme-toggle {
@@ -172,8 +199,18 @@
     width: 100%;
   }
 
+  .app-header-right {
+    flex-direction: column;
+    width: 100%;
+  }
+
   .app-header h1 {
     font-size: 1.125rem;
+  }
+
+  .search-input {
+    width: 100%;
+    min-width: auto;
   }
 
   .button-create {

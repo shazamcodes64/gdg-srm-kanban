@@ -4,6 +4,11 @@
 export type TaskStatus = 'todo' | 'inprogress' | 'done';
 
 /**
+ * Task priority levels
+ */
+export type TaskPriority = 'low' | 'medium' | 'high';
+
+/**
  * Task entity representing a work item in the kanban board
  */
 export interface Task {
@@ -12,6 +17,7 @@ export interface Task {
   description: string;
   status: TaskStatus;
   createdAt: string; // ISO 8601 timestamp
+  priority: TaskPriority;
 }
 
 /**
@@ -28,4 +34,22 @@ export const STATUS_LABELS: Record<TaskStatus, string> = {
   todo: 'To Do',
   inprogress: 'In Progress',
   done: 'Done',
+};
+
+/**
+ * Priority labels for display
+ */
+export const PRIORITY_LABELS: Record<TaskPriority, string> = {
+  low: 'Low',
+  medium: 'Medium',
+  high: 'High',
+};
+
+/**
+ * Priority colors for visual distinction
+ */
+export const PRIORITY_COLORS: Record<TaskPriority, string> = {
+  low: '#10b981',    // green
+  medium: '#f59e0b', // orange
+  high: '#ef4444',   // red
 };

@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import type { FormEvent } from 'react';
-import type { Task } from '../types';
+import type { Task, TaskPriority } from '../types';
+import { PRIORITY_LABELS } from '../types';
 import '../styles/TaskForm.css';
 
 export interface TaskFormProps {
   task: Task | null; // null for create, Task for edit
-  onSubmit: (title: string, description: string) => void;
+  onSubmit: (title: string, description: string, priority: TaskPriority) => void;
   onCancel: () => void;
 }
 
@@ -17,6 +18,7 @@ interface FormErrors {
 export function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [priority, setPriority] = useState<TaskPriority>('medium');
   const [errors, setErrors] = useState<FormErrors>({});
 
   // Initialize form with task data for edit mode
@@ -24,9 +26,11 @@ export function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
     if (task) {
       setTitle(task.title);
       setDescription(task.description);
+      setPriority(task.priority);
     } else {
       setTitle('');
       setDescription('');
+      setPriority('medium');
     }
     setErrors({});
   }, [task]);
@@ -68,10 +72,11 @@ export function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
     e.preventDefault();
 
     if (validate()) {
-      onSubmit(title.trim(), description.trim());
+      onSubmit(title.trim(), description.trim(), priority);
       // Reset form after successful submit
       setTitle('');
       setDescription('');
+      setPriority('medium');
       setErrors({});
     }
   };
@@ -79,6 +84,7 @@ export function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
   const handleCancel = () => {
     setTitle('');
     setDescription('');
+    setPriority('medium');
     setErrors({});
     onCancel();
   };
@@ -135,6 +141,23 @@ export function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
                 {errors.description}
               </span>
             )}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="task-priority">Priority</label>
+            <select
+              id="task-priority"
+              value={priority}
+              onChange={(e) => setPriority(e.target.value as TaskPriority)}
+              aria-label="Task priority"
+              className="priority-select"
+            >
+              {(Object.keys(PRIORITY_LABELS) as TaskPriority[]).map((p) => (
+                <option key={p} value={p}>
+                  {PRIORITY_LABELS[p]}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="form-actions">

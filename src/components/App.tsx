@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import type { Task, BoardState } from '../types';
+import type { Task, BoardState, TaskPriority } from '../types';
 import { Board } from './Board';
 import { TaskForm } from './TaskForm';
 import { handleDragEnd as boardHandleDragEnd } from './Board';
@@ -27,6 +27,7 @@ export function App() {
   const [isInitialized, setIsInitialized] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Load theme from LocalStorage on mount
   useEffect(() => {
@@ -107,7 +108,7 @@ export function App() {
    * Handles task creation
    * Validates input, generates ID, adds to state
    */
-  const handleCreateTask = useCallback((title: string, description: string) => {
+  const handleCreateTask = useCallback((title: string, description: string, priority: TaskPriority) => {
     // Validation is handled by TaskForm component
     const newTask: Task = {
       id: generateId(),
@@ -115,6 +116,7 @@ export function App() {
       description,
       status: 'todo',
       createdAt: new Date().toISOString(),
+      priority,
     };
 
     setTasks(prev => [...prev, newTask]);
@@ -125,7 +127,7 @@ export function App() {
    * Handles task editing
    * Validates input, updates task in state
    */
-  const handleEditTask = useCallback((title: string, description: string) => {
+  const handleEditTask = useCallback((title: string, description: string, priority: TaskPriority) => {
     if (!editingTask) return;
 
     const taskId = editingTask.id;
@@ -133,7 +135,7 @@ export function App() {
     setTasks(prev =>
       prev.map((t) =>
         t.id === taskId
-          ? { ...t, title, description }
+          ? { ...t, title, description, priority }
           : t
       )
     );
@@ -207,6 +209,14 @@ export function App() {
     }
   };
 
+  /**
+   * Filter tasks based on search query
+   */
+  const filteredTasks = tasks.filter(task =>
+    task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    task.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="app">
       {/* Error banner */}
@@ -239,19 +249,29 @@ export function App() {
             {saveStatus === 'saving' ? 'Saving…' : saveStatus === 'saved' ? '✓ Saved' : ''}
           </span>
         </div>
-        <button
-          onClick={handleOpenCreate}
-          className="button button-create"
-          aria-label="Create new task"
-          title="Create new task (Press N)"
-        >
-          + New Task
-        </button>
+        <div className="app-header-right">
+          <input
+            type="search"
+            placeholder="Search tasks..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+            aria-label="Search tasks"
+          />
+          <button
+            onClick={handleOpenCreate}
+            className="button button-create"
+            aria-label="Create new task"
+            title="Create new task (Press N)"
+          >
+            + New Task
+          </button>
+        </div>
       </header>
 
       {/* Board */}
       <Board
-        tasks={tasks}
+        tasks={filteredTasks}
         onDragEnd={handleDragEnd}
         onEditTask={handleEditTaskClick}
         onDeleteTask={handleDeleteTask}

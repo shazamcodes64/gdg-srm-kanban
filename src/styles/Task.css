@@ -35,15 +35,19 @@
 
 /* Task Content */
 
-.task-content {
-  margin-bottom: 0.75rem;
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 6px;
 }
 
 .task-title {
   font-size: 1rem;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 6px;
+  margin: 0;
   word-wrap: break-word;
   overflow-wrap: break-word;
   display: -webkit-box;
@@ -51,6 +55,20 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   line-height: 1.4;
+  flex: 1;
+}
+
+.priority-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .task-description {
@@ -59,6 +77,11 @@
   line-height: 1.5;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  margin: 0;
+}
+
+.task-content {
+  margin-bottom: 0.75rem;
 }
 
 /* Task Actions */
