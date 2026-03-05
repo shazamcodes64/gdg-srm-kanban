@@ -1,6 +1,24 @@
 # Kanban Task Management
 
+[![CI](https://github.com/shazamcodes64/gdg-srm-kanban/actions/workflows/ci.yml/badge.svg)](https://github.com/shazamcodes64/gdg-srm-kanban/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A modern, responsive kanban board application for organizing tasks across three workflow stages: To Do, In Progress, and Done. Built with React, TypeScript, and drag-and-drop functionality for intuitive task management.
+
+## 📸 Screenshots
+
+![Kanban Board](https://via.placeholder.com/800x400/667eea/ffffff?text=Kanban+Board+Demo)
+*Replace with actual screenshot of your application*
+
+## ✨ Highlights
+
+- 🤖 **AI-Powered Priority Prediction** - Smart task prioritization using machine learning
+- 🎯 **Drag-and-Drop Interface** - Intuitive task management with smooth animations
+- 💾 **Auto-Save** - Never lose your work with automatic LocalStorage persistence
+- 📱 **Fully Responsive** - Works seamlessly on desktop, tablet, and mobile
+- ♿ **Accessible** - WCAG compliant with keyboard navigation and screen reader support
+- ⚡ **Fast & Lightweight** - Built with Vite for optimal performance
+- 🧪 **100% Test Coverage** - Comprehensive unit and property-based tests
 
 ## Features
 

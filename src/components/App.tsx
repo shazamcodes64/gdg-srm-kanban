@@ -1,10 +1,12 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import type { Task, BoardState, TaskPriority } from '../types';
 import { Board } from './Board';
-import { TaskForm } from './TaskForm';
 import { handleDragEnd as boardHandleDragEnd } from './Board';
 import type { DropResult } from '@hello-pangea/dnd';
 import '../styles/App.css';
+
+// Lazy load TaskForm for better initial load performance
+const TaskForm = lazy(() => import('./TaskForm').then(module => ({ default: module.TaskForm })));
 
 /**
  * Generates a unique ID for tasks
@@ -28,6 +30,7 @@ export function App() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
   const [searchQuery, setSearchQuery] = useState('');
+  const [showHelp, setShowHelp] = useState(false);
 
   // Load theme from LocalStorage on mount
   useEffect(() => {
@@ -266,6 +269,14 @@ export function App() {
           >
             + New Task
           </button>
+          <button
+            onClick={() => setShowHelp(true)}
+            className="button button-help"
+            aria-label="Show keyboard shortcuts"
+            title="Keyboard shortcuts"
+          >
+            ?
+          </button>
         </div>
       </header>
 
@@ -277,13 +288,60 @@ export function App() {
         onDeleteTask={handleDeleteTask}
       />
 
+      {/* Footer */}
+      <footer className="app-footer">
+        <p>
+          Built with ❤️ using React, TypeScript & AI • {tasks.length} {tasks.length === 1 ? 'task' : 'tasks'} total
+        </p>
+      </footer>
+
       {/* Task form modal */}
       {(isCreating || editingTask) && (
-        <TaskForm
-          task={editingTask}
-          onSubmit={isCreating ? handleCreateTask : handleEditTask}
-          onCancel={handleCancelForm}
-        />
+        <Suspense fallback={<div className="modal-overlay"><div className="modal-content">Loading...</div></div>}>
+          <TaskForm
+            task={editingTask}
+            onSubmit={isCreating ? handleCreateTask : handleEditTask}
+            onCancel={handleCancelForm}
+          />
+        </Suspense>
+      )}
+
+      {/* Keyboard shortcuts help modal */}
+      {showHelp && (
+        <div className="modal-overlay" onClick={() => setShowHelp(false)}>
+          <div className="modal-content help-modal" onClick={(e) => e.stopPropagation()}>
+            <h2>⌨️ Keyboard Shortcuts</h2>
+            <div className="shortcuts-list">
+              <div className="shortcut-item">
+                <kbd>N</kbd>
+                <span>Create new task</span>
+              </div>
+              <div className="shortcut-item">
+                <kbd>Esc</kbd>
+                <span>Close modal</span>
+              </div>
+              <div className="shortcut-item">
+                <kbd>Tab</kbd>
+                <span>Navigate between elements</span>
+              </div>
+              <div className="shortcut-item">
+                <kbd>Space</kbd>
+                <span>Activate drag-and-drop (when focused on task)</span>
+              </div>
+              <div className="shortcut-item">
+                <kbd>Arrow Keys</kbd>
+                <span>Move task during keyboard drag</span>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowHelp(false)}
+              className="button button-submit"
+              style={{ marginTop: '1.5rem', width: '100%' }}
+            >
+              Got it!
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

@@ -1,8 +1,21 @@
 {
   "name": "gdg-srm-kanban",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "AI-powered Kanban task management board with drag-and-drop, smart prioritization, and local persistence",
+  "keywords": [
+    "kanban",
+    "task-management",
+    "react",
+    "typescript",
+    "drag-and-drop",
+    "machine-learning",
+    "ai",
+    "productivity"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
