@@ -17,11 +17,11 @@
   --text-primary: #1a202c;
   --text-secondary: #718096;
   --border-color: #e2e8f0;
-  --accent-color: #667eea;
-  --accent-hover: #5a67d8;
+  --accent-color: #2c5364;
+  --accent-hover: #203a43;
   --error-color: #e74c3c;
   --success-color: #2ecc71;
-  --header-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --header-bg: linear-gradient(135deg, #0f2027 0%, #2c5364 100%);
   --column-header-bg: #f9fafb;
   
   font-synthesis: none;
@@ -38,11 +38,11 @@
   --text-primary: #f1f5f9;
   --text-secondary: #94a3b8;
   --border-color: #334155;
-  --accent-color: #818cf8;
-  --accent-hover: #6366f1;
+  --accent-color: #38bdf8;
+  --accent-hover: #0ea5e9;
   --error-color: #ef4444;
   --success-color: #10b981;
-  --header-bg: linear-gradient(135deg, #4c1d95 0%, #5b21b6 100%);
+  --header-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
   --column-header-bg: #1e293b;
 }
 
