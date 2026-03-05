@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import * as fc from 'fast-check';
-import type { Task, TaskStatus } from '../types';
-import type { DraggableLocation, DropResult } from '@hello-pangea/dnd';
-import { reorderTasks } from './Board';
+import type { TaskStatus } from '../types';
+import type { DraggableLocation } from '@hello-pangea/dnd';
+import { reorderTasks } from '../utils/dragDropUtils';
 
 /**
  * Arbitrary generator for TaskStatus
@@ -23,11 +23,12 @@ const taskArbitrary = fc.record({
 /**
  * Arbitrary generator for DraggableLocation
  */
-const draggableLocationArbitrary = (status: TaskStatus, maxIndex: number) =>
-  fc.record({
-    droppableId: fc.constant(status),
-    index: fc.integer({ min: 0, max: Math.max(0, maxIndex) }),
-  });
+// Unused but kept for potential future use
+// const draggableLocationArbitrary = (status: TaskStatus, maxIndex: number) =>
+//   fc.record({
+//     droppableId: fc.constant(status),
+//     index: fc.integer({ min: 0, max: Math.max(0, maxIndex) }),
+//   });
 
 describe('Property-Based Tests: Drag-and-Drop Status Updates', () => {
   /**

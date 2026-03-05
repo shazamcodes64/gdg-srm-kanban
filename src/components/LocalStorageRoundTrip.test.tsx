@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import * as fc from 'fast-check';
-import type { Task, TaskStatus, BoardState } from '../types';
+import type { TaskStatus, BoardState } from '../types';
 
 /**
  * Arbitrary generator for TaskStatus

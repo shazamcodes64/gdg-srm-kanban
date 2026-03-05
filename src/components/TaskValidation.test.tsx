@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import * as fc from 'fast-check';
-import type { Task, TaskStatus } from '../types';
+import type { TaskStatus } from '../types';
 
 /**
  * Arbitrary generator for TaskStatus

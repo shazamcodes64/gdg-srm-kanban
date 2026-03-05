@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Board, reorderTasks, handleDragEnd } from './Board';
+import { Board } from './Board';
+import { reorderTasks, handleDragEnd } from '../utils/dragDropUtils';
 import type { Task } from '../types';
 import type { DropResult, DraggableLocation } from '@hello-pangea/dnd';
 

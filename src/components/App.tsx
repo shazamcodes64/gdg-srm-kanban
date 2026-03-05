@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import type { Task, BoardState, TaskPriority } from '../types';
 import { Board } from './Board';
-import { handleDragEnd as boardHandleDragEnd } from './Board';
+import { handleDragEnd as boardHandleDragEnd } from '../utils/dragDropUtils';
 import type { DropResult } from '@hello-pangea/dnd';
 import '../styles/App.css';
 

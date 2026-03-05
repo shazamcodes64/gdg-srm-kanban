@@ -31,6 +31,7 @@ export function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
   // Initialize form with task data for edit mode
   useEffect(() => {
     if (task) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTitle(task.title);
       setDescription(task.description);
       setPriority(task.priority);
@@ -48,16 +49,20 @@ export function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
   useEffect(() => {
     if (title.trim().length > 3) {
       const prediction = predictTaskPriority(title, description);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setMlSuggestion(prediction);
-      
-      // Auto-set priority for new tasks if confidence is high
-      if (!task && prediction.confidence >= 0.7) {
-        setPriority(prediction.priority);
-      }
     } else {
       setMlSuggestion(null);
     }
-  }, [title, description, task]);
+  }, [title, description]);
+
+  // Auto-apply ML suggestion for new tasks with high confidence
+  useEffect(() => {
+    if (!task && mlSuggestion && mlSuggestion.confidence >= 0.7) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setPriority(mlSuggestion.priority);
+    }
+  }, [mlSuggestion, task]);
 
   // Handle Escape key to close modal
   useEffect(() => {

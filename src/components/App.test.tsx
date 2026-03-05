@@ -413,6 +413,7 @@ describe('App Integration Tests', () => {
   describe('ID Generation Fallback', () => {
     it('uses fallback ID generation when crypto.randomUUID is unavailable', async () => {
       // Override the beforeEach mock to return undefined, simulating unavailable crypto.randomUUID
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       global.crypto.randomUUID = undefined as any;
 
       render(<App />);
@@ -443,6 +444,7 @@ describe('App Integration Tests', () => {
 
     it('generates unique IDs with fallback method', async () => {
       // Override the beforeEach mock to return undefined
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       global.crypto.randomUUID = undefined as any;
 
       render(<App />);

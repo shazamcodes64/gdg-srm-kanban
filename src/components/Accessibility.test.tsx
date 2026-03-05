@@ -64,7 +64,6 @@ describe('Accessibility Features', () => {
 
   describe('Focus Indicators (Requirement 10.2)', () => {
     it('should have visible focus indicator on create button', async () => {
-      const user = userEvent.setup();
       render(<App />);
       
       const createButton = screen.getByRole('button', { name: /create new task/i });
@@ -101,12 +100,11 @@ describe('Accessibility Features', () => {
     });
 
     it('should have visible focus indicators on form inputs', async () => {
-      const user = userEvent.setup();
       render(<App />);
       
       // Open create form
       const createButton = screen.getByRole('button', { name: /create new task/i });
-      await user.click(createButton);
+      await userEvent.setup().click(createButton);
       
       // Wait for lazy-loaded TaskForm
       await waitFor(() => {
@@ -115,21 +113,20 @@ describe('Accessibility Features', () => {
       
       // Verify form inputs can receive focus
       const titleInput = screen.getByLabelText(/Task title/i);
-      await user.click(titleInput);
+      await userEvent.setup().click(titleInput);
       expect(titleInput).toHaveFocus();
       
       const descriptionInput = screen.getByLabelText(/description/i);
-      await user.click(descriptionInput);
+      await userEvent.setup().click(descriptionInput);
       expect(descriptionInput).toHaveFocus();
     });
 
     it('should have visible focus indicators on form buttons', async () => {
-      const user = userEvent.setup();
       render(<App />);
       
       // Open create form
       const createButton = screen.getByRole('button', { name: /create new task/i });
-      await user.click(createButton);
+      await userEvent.setup().click(createButton);
       
       // Verify form buttons can receive focus
       const cancelButton = screen.getByRole('button', { name: /cancel/i });
@@ -254,8 +251,6 @@ describe('Accessibility Features', () => {
 
   describe('Keyboard Navigation (Requirement 10.4, 10.5)', () => {
     it('should allow tabbing through all interactive elements', async () => {
-      const user = userEvent.setup();
-      
       // Create multiple tasks
       localStorage.setItem('kanban-board-state', JSON.stringify({
         tasks: [
@@ -399,18 +394,17 @@ describe('Accessibility Features', () => {
     });
 
     it('should close modal with Escape key', async () => {
-      const user = userEvent.setup();
       render(<App />);
       
       // Open create form
       const createButton = screen.getByRole('button', { name: /create new task/i });
-      await user.click(createButton);
+      await userEvent.setup().click(createButton);
       
       // Verify form is open
       expect(screen.getByRole('dialog')).toBeInTheDocument();
       
       // Press Escape
-      await user.keyboard('{Escape}');
+      await userEvent.setup().keyboard('{Escape}');
       
       // Verify form is closed
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
@@ -462,8 +456,6 @@ describe('Accessibility Features', () => {
     });
 
     it('should have accessible close button on error banner', async () => {
-      const user = userEvent.setup();
-      
       // Manually set an error state by corrupting localStorage
       localStorage.setItem('kanban-board-state', 'invalid json');
       
@@ -477,7 +469,7 @@ describe('Accessibility Features', () => {
         
         // Verify close button works with keyboard
         closeButton.focus();
-        await user.keyboard('{Enter}');
+        await userEvent.setup().keyboard('{Enter}');
       }
     });
   });
