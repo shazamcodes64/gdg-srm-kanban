@@ -291,7 +291,7 @@ export function App() {
       {/* Footer */}
       <footer className="app-footer">
         <p>
-          Built with ❤️ using React & TypeScript • {tasks.length} {tasks.length === 1 ? 'task' : 'tasks'} total
+          "Productivity is never an accident. It is always the result of commitment to excellence." • {tasks.length} {tasks.length === 1 ? 'task' : 'tasks'} total
         </p>
       </footer>
 
