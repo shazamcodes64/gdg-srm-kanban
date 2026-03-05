@@ -3,42 +3,50 @@
 .column {
   display: flex;
   flex-direction: column;
-  background-color: var(--bg-secondary);
-  border-radius: 8px;
+  background: var(--bg-secondary);
+  border-radius: 16px;
   border: 1px solid var(--border-color);
   min-height: 0;
   overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.column:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 /* Column Header */
 
 .column-header {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 1.125rem;
+  font-weight: 700;
   color: var(--text-primary);
-  padding: 1rem 1.25rem;
-  background-color: var(--column-header-bg);
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
   border-bottom: 2px solid var(--border-color);
   margin: 0;
   flex-shrink: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  letter-spacing: -0.3px;
 }
 
 .column-count {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--border-color);
-  color: var(--text-secondary);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
   font-size: 0.75rem;
-  font-weight: 600;
-  min-width: 24px;
-  height: 24px;
-  padding: 0 8px;
-  border-radius: 12px;
-  margin-left: 8px;
+  font-weight: 700;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 14px;
+  margin-left: 10px;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
 
 /* Task List Container */
