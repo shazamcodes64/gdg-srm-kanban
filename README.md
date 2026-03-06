@@ -9,13 +9,14 @@ A modern, responsive kanban board application for organizing tasks across three 
 
 <div align="center">
   <img src="screenshots/kanban-demo.png?v=2" alt="Kanban Board Demo" width="800">
-  <p><em>Modern Kanban board with icon buttons, toast notifications, and professional UI polish</em></p>
+  <p><em>Modern Kanban board with professional UI polish, icon buttons, and toast notifications</em></p>
 </div>
 
 ## ✨ Highlights
 
-- 🤖 **AI-Powered Priority Prediction** - Smart task prioritization using machine learning
+- 🎨 **Professional UI Design** - Modern SaaS-style interface with 8px spacing system and design tokens
 - 🎯 **Drag-and-Drop Interface** - Intuitive task management with smooth animations
+- 🔔 **Toast Notifications** - Real-time feedback for all user actions (create, edit, delete, move)
 - 💾 **Auto-Save** - Never lose your work with automatic LocalStorage persistence
 - 📱 **Fully Responsive** - Works seamlessly on desktop, tablet, and mobile
 - ♿ **Accessible** - WCAG compliant with keyboard navigation and screen reader support
@@ -26,8 +27,14 @@ A modern, responsive kanban board application for organizing tasks across three 
 
 - **Visual Task Organization**: Three-column kanban board (To Do, In Progress, Done)
 - **Drag-and-Drop**: Intuitive task movement between columns and reordering within columns
-- **Task Management**: Create, edit, and delete tasks with titles and descriptions
-- **🤖 AI-Powered Priority Prediction**: Machine learning-based smart task prioritization
+- **Task Management**: Create, edit, and delete tasks with titles, descriptions, priorities, and due dates
+- **Priority Levels**: Color-coded priority badges (Low, Medium, High, Urgent)
+- **Due Date Tracking**: Set due dates with visual overdue indicators
+- **Toast Notifications**: Real-time feedback for create, edit, delete, and move operations
+- **Icon Buttons**: Clean, modern icon-based actions using Lucide React
+- **Search Functionality**: Quick task search across all columns
+- **Dark Mode**: Toggle between light and dark themes
+- **Keyboard Shortcuts**: Press 'N' to create tasks, 'Esc' to close modals
 - **Local Persistence**: Automatic saving to browser LocalStorage
 - **Responsive Design**: Optimized for desktop (horizontal layout) and mobile (vertical layout)
 - **Accessibility**: Keyboard navigation, semantic HTML, and ARIA labels
@@ -43,6 +50,8 @@ A modern, responsive kanban board application for organizing tasks across three 
 
 ### Key Libraries
 - **@hello-pangea/dnd**: Drag-and-drop functionality (maintained fork of react-beautiful-dnd)
+- **Lucide React**: Modern icon library for clean UI elements
+- **Sonner**: Beautiful toast notifications for user feedback
 - **fast-check**: Property-based testing for robust validation
 - **Vitest**: Fast unit testing framework
 - **React Testing Library**: Component testing utilities
@@ -134,7 +143,8 @@ interface Task {
   title: string;           // 1-200 characters
   description: string;     // 0-200 characters
   status: 'todo' | 'inprogress' | 'done';
-  priority: 'low' | 'medium' | 'high' | 'urgent';  // AI-predicted
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  dueDate?: string;        // Optional ISO 8601 date
   createdAt: string;       // ISO 8601 timestamp
 }
 ```
@@ -145,73 +155,64 @@ src/
 ├── components/
 │   ├── App.tsx              # Root component, state management
 │   ├── Board.tsx            # Drag-and-drop context wrapper
-│   ├── Column.tsx           # Column container with task filtering
-│   ├── Task.tsx             # Individual task card
+│   ├── Column.tsx           # Column container with progress bars
+│   ├── Task.tsx             # Individual task card with icon buttons
 │   ├── TaskForm.tsx         # Create/edit modal form
 │   └── ErrorBoundary.tsx    # Error boundary wrapper
-├── ml/
-│   └── taskPrioritization.ts # ML priority prediction engine
+├── utils/
+│   └── dragDropUtils.ts     # Drag-and-drop helper functions
 ├── types/
 │   └── index.ts             # TypeScript interfaces
 ├── styles/
-│   ├── App.css
-│   ├── Board.css
-│   ├── Column.css
-│   ├── Task.css
-│   └── TaskForm.css
+│   ├── App.css              # App layout and header styles
+│   ├── Board.css            # Board grid layout
+│   ├── Column.css           # Column and progress bar styles
+│   ├── Task.css             # Task card and icon button styles
+│   └── TaskForm.css         # Modal form styles
 ├── test/
-│   └── [test files]
+│   └── [test files]         # Comprehensive test suite
 ├── main.tsx                 # Application entry point
-└── index.css                # Global styles
+└── index.css                # Global styles and design tokens
 ```
 
 ## Key Features Explained
 
-### 🤖 AI-Powered Smart Task Prioritization
+### 🎨 Professional UI Design
 
-The application includes a machine learning-based priority prediction system that analyzes task content to suggest appropriate priority levels.
+The application features a modern, polished interface built with professional SaaS design principles:
 
-#### How It Works
+#### Design System
+- **8px Spacing System**: Consistent spacing using design tokens (--space-1 through --space-8)
+- **Border Radius Tokens**: Standardized corner radii (--radius-sm, --radius-md, --radius-lg)
+- **Color Tokens**: Theme-aware CSS variables for seamless light/dark mode switching
+- **Utility Classes**: Reusable spacing utilities (p-2, p-4, mb-3, gap-4, etc.)
 
-The ML model uses **Natural Language Processing (NLP)** techniques to analyze task titles and descriptions:
+#### Modern UI Elements
+- **Icon Buttons**: Clean, minimal icon-based actions using Lucide React (Edit2, Trash2)
+- **Toast Notifications**: Real-time feedback using Sonner for all user actions
+- **Progress Bars**: Visual progress indicators in each column showing task distribution
+- **Gradient Headers**: Eye-catching gradient backgrounds with smooth transitions
+- **Hover Effects**: Subtle animations and elevation changes for better interactivity
+- **Empty States**: Helpful messages and icons when columns are empty
 
-1. **Keyword Analysis**: Identifies urgency indicators like "urgent", "critical", "asap", "bug", "fix"
-2. **Time Indicators**: Detects temporal keywords like "today", "tomorrow", "this week"
-3. **Action Complexity**: Analyzes action verbs to estimate task complexity
-4. **Text Features**: Examines punctuation (exclamation marks, ALL CAPS) and text length
-5. **Confidence Scoring**: Calculates prediction confidence based on signal strength
-
-#### Priority Levels
-- **🔴 Urgent**: Critical issues requiring immediate attention
-- **🟠 High**: Important tasks with near-term deadlines
-- **🟡 Medium**: Standard tasks with moderate priority
+#### Priority System
 - **🟢 Low**: Nice-to-have items or future considerations
+- **🔵 Medium**: Standard tasks with moderate priority
+- **🟠 High**: Important tasks with near-term deadlines
+- **🔴 Urgent**: Critical issues requiring immediate attention
 
-#### User Experience
-- **Real-time Suggestions**: As you type, the AI analyzes content and suggests priority
-- **Auto-Apply**: High-confidence predictions (≥70%) are automatically applied for new tasks
-- **Transparency**: View AI reasoning to understand why a priority was suggested
-- **User Control**: Accept, reject, or modify AI suggestions at any time
-
-#### Technical Implementation
-- **Lightweight**: Runs entirely in the browser, no backend required
-- **Fast**: Predictions complete in milliseconds
-- **Privacy-Focused**: All processing happens locally, no data sent to servers
-- **Extensible**: Easy to add new keywords and rules
-
-#### Example Predictions
-```
-"Fix critical bug in production" → 🔴 Urgent (95% confidence)
-"Update documentation" → 🟢 Low (80% confidence)
-"Implement user authentication by Friday" → 🟠 High (85% confidence)
-"Maybe add dark mode someday" → 🟢 Low (90% confidence)
-```
+#### Due Date Management
+- **Date Picker**: Easy-to-use date selection for task deadlines
+- **Visual Indicators**: Calendar emoji (📅) shows due dates at a glance
+- **Overdue Alerts**: Red border and warning emoji (⚠️) for overdue tasks
+- **Automatic Detection**: System automatically checks and highlights overdue tasks
 
 ### Drag-and-Drop
 - Powered by @hello-pangea/dnd for smooth, accessible interactions
 - Supports mouse, touch, and keyboard navigation
-- Visual feedback during drag operations
+- Visual feedback during drag operations with scale and shadow effects
 - Automatic status updates when tasks move between columns
+- Toast notifications confirm successful task moves
 
 ### Local Persistence
 - All changes automatically saved to browser LocalStorage
@@ -259,14 +260,14 @@ Key properties tested:
 
 ## Project Scope
 
-This is a frontend-focused recruitment demonstration project emphasizing:
-- Core CRUD operations
-- Drag-and-drop interaction
-- Local persistence
-- Responsive design
-- Clean, maintainable code
-
-Intentionally limited to features implementable within 15-20 hours.
+This is a frontend-focused demonstration project emphasizing:
+- Professional UI/UX design with modern SaaS patterns
+- Core CRUD operations with real-time feedback
+- Drag-and-drop interaction with accessibility support
+- Local persistence with automatic saving
+- Responsive design for all device sizes
+- Clean, maintainable, and well-tested code
+- Comprehensive test coverage (100 tests passing)
 
 ## License
 
