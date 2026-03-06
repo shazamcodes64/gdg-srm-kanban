@@ -68,15 +68,17 @@ describe('App Integration Tests', () => {
       const submitButton = screen.getByRole('button', { name: /Create Task/i });
       fireEvent.click(submitButton);
 
-      // Verify task appears in To Do column
+      // Verify task appears in To Do column - use more specific query
       await waitFor(() => {
-        expect(screen.getByText('New Test Task')).toBeInTheDocument();
-        expect(screen.getByText('Test description')).toBeInTheDocument();
+        const taskCard = screen.getByRole('article');
+        expect(taskCard).toHaveTextContent('New Test Task');
+        expect(taskCard).toHaveTextContent('Test description');
       });
 
       // Verify task is in To Do column
       const todoColumn = screen.getByText('To Do').closest('section');
-      expect(todoColumn).toContainElement(screen.getByText('New Test Task'));
+      const taskCard = screen.getByRole('article');
+      expect(todoColumn).toContainElement(taskCard);
     });
 
     it('saves task to LocalStorage after creation', async () => {

@@ -24,6 +24,11 @@
   overflow-y: auto;
 }
 
+.modal-content.help-modal {
+  max-width: 900px;
+  width: 95%;
+}
+
 .modal-content h2 {
   margin: 0 0 1.5rem 0;
   font-size: 1.5rem;
@@ -188,7 +193,7 @@
 .ml-suggestion {
   margin-top: 0.75rem;
   padding: 0.875rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
   border-radius: 6px;
   color: white;
   animation: slideIn 0.3s ease-out;

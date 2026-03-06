@@ -18,6 +18,7 @@ export interface Task {
   status: TaskStatus;
   createdAt: string; // ISO 8601 timestamp
   priority: TaskPriority;
+  dueDate?: string; // ISO 8601 date (YYYY-MM-DD), optional
 }
 
 /**
@@ -47,11 +48,11 @@ export const PRIORITY_LABELS: Record<TaskPriority, string> = {
 };
 
 /**
- * Priority colors for visual distinction
+ * Priority colors for visual distinction (optimized for both light and dark modes)
  */
 export const PRIORITY_COLORS: Record<TaskPriority, string> = {
-  low: '#10b981',    // green
-  medium: '#f59e0b', // orange
-  high: '#ef4444',   // red
-  urgent: '#dc2626', // dark red
+  low: '#10b981',    // green - calm, low urgency
+  medium: '#3b82f6', // blue - moderate attention
+  high: '#f97316',   // orange - needs attention
+  urgent: '#ef4444', // red - immediate action
 };

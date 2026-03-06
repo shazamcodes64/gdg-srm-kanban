@@ -1,10 +1,17 @@
 .board {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  grid-template-columns: repeat(3, minmax(340px, 380px));
+  gap: 1.5rem;
   height: calc(100vh - 4rem);
   padding: 2rem;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  justify-content: center;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+[data-theme="dark"] .board {
+  background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
 }
 
 /* Mobile layout - vertical stacked columns */

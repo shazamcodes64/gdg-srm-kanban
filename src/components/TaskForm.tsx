@@ -7,7 +7,7 @@ import '../styles/TaskForm.css';
 
 export interface TaskFormProps {
   task: Task | null; // null for create, Task for edit
-  onSubmit: (title: string, description: string, priority: TaskPriority) => void;
+  onSubmit: (title: string, description: string, priority: TaskPriority, dueDate?: string) => void;
   onCancel: () => void;
 }
 
@@ -20,6 +20,7 @@ export function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState<TaskPriority>('medium');
+  const [dueDate, setDueDate] = useState('');
   const [errors, setErrors] = useState<FormErrors>({});
   const [mlSuggestion, setMlSuggestion] = useState<{
     priority: TaskPriority;
@@ -35,10 +36,12 @@ export function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
       setTitle(task.title);
       setDescription(task.description);
       setPriority(task.priority);
+      setDueDate(task.dueDate || '');
     } else {
       setTitle('');
       setDescription('');
       setPriority('medium');
+      setDueDate('');
     }
     setErrors({});
     setMlSuggestion(null);
@@ -101,11 +104,12 @@ export function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
     e.preventDefault();
 
     if (validate()) {
-      onSubmit(title.trim(), description.trim(), priority);
+      onSubmit(title.trim(), description.trim(), priority, dueDate || undefined);
       // Reset form after successful submit
       setTitle('');
       setDescription('');
       setPriority('medium');
+      setDueDate('');
       setErrors({});
     }
   };
@@ -114,6 +118,7 @@ export function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
     setTitle('');
     setDescription('');
     setPriority('medium');
+    setDueDate('');
     setErrors({});
     onCancel();
   };
@@ -229,6 +234,18 @@ export function TaskForm({ task, onSubmit, onCancel }: TaskFormProps) {
                 )}
               </div>
             )}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="task-due-date">Due Date</label>
+            <input
+              id="task-due-date"
+              type="date"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+              aria-label="Task due date"
+              className="priority-select"
+            />
           </div>
 
           <div className="form-actions">

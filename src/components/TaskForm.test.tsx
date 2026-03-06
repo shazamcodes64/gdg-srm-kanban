@@ -88,7 +88,7 @@ describe('TaskForm', () => {
     const submitButton = screen.getByRole('button', { name: /Create task/i });
     fireEvent.click(submitButton);
     
-    expect(mockOnSubmit).toHaveBeenCalledWith('Valid Title', 'Valid Description', 'medium');
+    expect(mockOnSubmit).toHaveBeenCalledWith('Valid Title', 'Valid Description', 'medium', undefined);
   });
 
   it('calls onCancel when cancel button is clicked', () => {

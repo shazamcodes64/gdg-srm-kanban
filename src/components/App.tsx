@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
+import { toast, Toaster } from 'sonner';
 import type { Task, BoardState, TaskPriority } from '../types';
 import { Board } from './Board';
 import { handleDragEnd as boardHandleDragEnd } from '../utils/dragDropUtils';
@@ -100,6 +101,7 @@ export function App() {
       } catch (error) {
         setSaveStatus('idle');
         setError('Failed to save board state');
+        toast.error('Failed to save board state');
         console.error('LocalStorage save error:', error);
       }
     }, 250);
@@ -111,7 +113,7 @@ export function App() {
    * Handles task creation
    * Validates input, generates ID, adds to state
    */
-  const handleCreateTask = useCallback((title: string, description: string, priority: TaskPriority) => {
+  const handleCreateTask = useCallback((title: string, description: string, priority: TaskPriority, dueDate?: string) => {
     // Validation is handled by TaskForm component
     const newTask: Task = {
       id: generateId(),
@@ -120,17 +122,21 @@ export function App() {
       status: 'todo',
       createdAt: new Date().toISOString(),
       priority,
+      dueDate,
     };
 
     setTasks(prev => [...prev, newTask]);
     setIsCreating(false);
+    toast.success('Task created', {
+      description: title,
+    });
   }, []);
 
   /**
    * Handles task editing
    * Validates input, updates task in state
    */
-  const handleEditTask = useCallback((title: string, description: string, priority: TaskPriority) => {
+  const handleEditTask = useCallback((title: string, description: string, priority: TaskPriority, dueDate?: string) => {
     if (!editingTask) return;
 
     const taskId = editingTask.id;
@@ -138,11 +144,14 @@ export function App() {
     setTasks(prev =>
       prev.map((t) =>
         t.id === taskId
-          ? { ...t, title, description, priority }
+          ? { ...t, title, description, priority, dueDate }
           : t
       )
     );
     setEditingTask(null);
+    toast.success('Task updated', {
+      description: title,
+    });
   }, [editingTask]);
 
   /**
@@ -155,6 +164,9 @@ export function App() {
       const taskTitle = task ? task.title : 'this task';
       
       if (window.confirm(`Delete "${taskTitle}"? This cannot be undone.`)) {
+        toast.success('Task deleted', {
+          description: taskTitle,
+        });
         return prev.filter((t) => t.id !== id);
       }
       return prev;
@@ -166,7 +178,11 @@ export function App() {
    * Delegates to Board component logic
    */
   const handleDragEnd = useCallback((result: DropResult) => {
-    boardHandleDragEnd(result, tasks, setTasks);
+    boardHandleDragEnd(result, tasks, setTasks, (taskTitle, newStatus) => {
+      toast.success('Task moved', {
+        description: `"${taskTitle}" → ${newStatus}`,
+      });
+    });
   }, [tasks]);
 
   /**
@@ -222,6 +238,7 @@ export function App() {
 
   return (
     <div className="app">
+      <Toaster position="top-right" richColors />
       {/* Error banner */}
       {error && (
         <div className="error-banner" role="alert">
@@ -311,27 +328,30 @@ export function App() {
         <div className="modal-overlay" onClick={() => setShowHelp(false)}>
           <div className="modal-content help-modal" onClick={(e) => e.stopPropagation()}>
             <h2>⌨️ Keyboard Shortcuts</h2>
-            <div className="shortcuts-list">
+            <div className="shortcuts-grid">
               <div className="shortcut-item">
-                <kbd>N</kbd>
+                <div className="shortcut-key">N</div>
                 <span>Create new task</span>
               </div>
               <div className="shortcut-item">
-                <kbd>Esc</kbd>
+                <div className="shortcut-key">Esc</div>
                 <span>Close modal</span>
               </div>
               <div className="shortcut-item">
-                <kbd>Tab</kbd>
-                <span>Navigate between elements</span>
+                <div className="shortcut-key">Tab</div>
+                <span>Focus on task</span>
               </div>
               <div className="shortcut-item">
-                <kbd>Space</kbd>
-                <span>Activate drag-and-drop (when focused on task)</span>
+                <div className="shortcut-key">Space</div>
+                <span>Pick up / Drop task</span>
               </div>
               <div className="shortcut-item">
-                <kbd>Arrow Keys</kbd>
-                <span>Move task during keyboard drag</span>
+                <div className="shortcut-key">↑ ↓</div>
+                <span>Move task up/down</span>
               </div>
+            </div>
+            <div className="help-tip-box">
+              💡 <strong>Tip:</strong> Arrow keys only work in keyboard drag mode. Press <kbd>Tab</kbd> to focus a task → <kbd>Space</kbd> to pick it up → use arrow keys to move → press <kbd>Space</kbd> again to drop.
             </div>
             <button
               onClick={() => setShowHelp(false)}
@@ -343,6 +363,9 @@ export function App() {
           </div>
         </div>
       )}
+
+      {/* Sonner toast notifications */}
+      <Toaster position="top-right" />
     </div>
   );
 }

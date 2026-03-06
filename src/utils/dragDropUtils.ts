@@ -47,7 +47,8 @@ export function reorderTasks(
 export function handleDragEnd(
   result: DropResult,
   tasks: Task[],
-  setTasks: (tasks: Task[]) => void
+  setTasks: (tasks: Task[]) => void,
+  onMove?: (taskTitle: string, newStatus: string) => void
 ): void {
   // Extract source and destination
   const { source, destination, draggableId } = result;
@@ -80,4 +81,14 @@ export function handleDragEnd(
   );
 
   setTasks(updatedTasks);
+  
+  // Notify about the move if callback provided
+  if (onMove && source.droppableId !== destination.droppableId) {
+    const statusLabels: Record<TaskStatus, string> = {
+      todo: 'To Do',
+      inprogress: 'In Progress',
+      done: 'Done'
+    };
+    onMove(task.title, statusLabels[newStatus]);
+  }
 }

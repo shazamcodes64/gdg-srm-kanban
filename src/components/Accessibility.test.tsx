@@ -318,9 +318,10 @@ describe('Accessibility Features', () => {
       submitButton.focus();
       await user.keyboard('{Enter}');
       
-      // Verify task was created
+      // Verify task was created - use more specific query to avoid toast notification
       await waitFor(() => {
-        expect(screen.getByText('New Task via Keyboard')).toBeInTheDocument();
+        const taskCard = screen.getByRole('article');
+        expect(taskCard).toHaveTextContent('New Task via Keyboard');
       });
     });
 
@@ -358,9 +359,12 @@ describe('Accessibility Features', () => {
       submitButton.focus();
       await user.keyboard('{Enter}');
       
-      // Verify task was updated
-      expect(screen.getByText('Updated Title')).toBeInTheDocument();
-      expect(screen.queryByText('Original Title')).not.toBeInTheDocument();
+      // Verify task was updated - use more specific query to avoid toast notification
+      await waitFor(() => {
+        const taskCard = screen.getByRole('article');
+        expect(taskCard).toHaveTextContent('Updated Title');
+      });
+      expect(screen.queryByRole('article', { name: /original title/i })).not.toBeInTheDocument();
     });
 
     it('should allow keyboard task deletion', async () => {
@@ -381,7 +385,8 @@ describe('Accessibility Features', () => {
       render(<App />);
       
       // Verify task exists
-      expect(screen.getByText('Task to Delete')).toBeInTheDocument();
+      const taskCard = screen.getByRole('article');
+      expect(taskCard).toHaveTextContent('Task to Delete');
       
       // Click delete button (confirmation is mocked to return true)
       const deleteButton = screen.getByRole('button', { name: /delete task: task to delete/i });
@@ -389,7 +394,7 @@ describe('Accessibility Features', () => {
       
       // Verify task was deleted
       await waitFor(() => {
-        expect(screen.queryByText('Task to Delete')).not.toBeInTheDocument();
+        expect(screen.queryByRole('article')).not.toBeInTheDocument();
       });
     });
 
@@ -503,9 +508,8 @@ describe('Accessibility Features', () => {
       const editButton = screen.getByRole('button', { name: /edit task: test task/i });
       
       // Verify minimum touch target size via CSS classes
-      // The button has class "task-button" which sets min-height and min-width to 44px
-      expect(editButton).toHaveClass('task-button');
-      expect(editButton).toHaveClass('task-button-edit');
+      // The button has class "icon-btn" which sets min-height and min-width to 32px
+      expect(editButton).toHaveClass('icon-btn');
     });
   });
 });

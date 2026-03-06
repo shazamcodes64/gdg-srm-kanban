@@ -180,9 +180,9 @@ describe('Responsive Design Tests', () => {
       expect(editButton).toBeInTheDocument();
       expect(deleteButton).toBeInTheDocument();
       
-      // Check that buttons have the task-button class which enforces min-width/height
-      expect(editButton).toHaveClass('task-button');
-      expect(deleteButton).toHaveClass('task-button');
+      // Check that buttons have the icon-btn class which enforces min-width/height
+      expect(editButton).toHaveClass('icon-btn');
+      expect(deleteButton).toHaveClass('icon-btn');
     });
 
     it('should have adequate touch targets for form buttons on mobile', () => {
