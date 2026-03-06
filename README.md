@@ -8,8 +8,8 @@ A modern, responsive kanban board application for organizing tasks across three 
 ## 📸 Screenshots
 
 <div align="center">
-  <img src="screenshots/kanban-demo.png" alt="Kanban Board Demo" width="800">
-  <p><em>AI-powered Kanban board with smart task prioritization and drag-and-drop functionality</em></p>
+  <img src="screenshots/kanban-demo.png?v=2" alt="Kanban Board Demo" width="800">
+  <p><em>Modern Kanban board with icon buttons, toast notifications, and professional UI polish</em></p>
 </div>
 
 ## ✨ Highlights
